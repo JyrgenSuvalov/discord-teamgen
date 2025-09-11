@@ -1,0 +1,1 @@
+ALTER TABLE `players` ADD `default_adr` real;

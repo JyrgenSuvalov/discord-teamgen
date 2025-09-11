@@ -1,0 +1,48 @@
+{
+	"version": "7",
+	"dialect": "sqlite",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "6",
+			"when": 1756587788539,
+			"tag": "0000_melted_aqueduct",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1756673175379,
+			"tag": "0001_slow_mauler",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1756848056827,
+			"tag": "0002_add_default_adr",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "6",
+			"when": 1756848200000,
+			"tag": "0003_tournament_indexes",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "6",
+			"when": 1757445348766,
+			"tag": "0004_sad_domino",
+			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "6",
+			"when": 1757448657929,
+			"tag": "0005_complex_spyke",
+			"breakpoints": true
+		}
+	]
+}

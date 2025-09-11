@@ -1,0 +1,11 @@
+# Development Environment Variables
+# Copy this file to .dev.vars and fill in your actual values
+
+# API Key for development (generate a random string)
+API_KEY="your_development_api_key_here"
+
+# Environment identifier
+ENVIRONMENT="development"
+
+# Tournament admin roles for development (comma-separated Discord role IDs)
+TOURNAMENT_ADMIN_ROLES="dev_role_id_1,dev_role_id_2"
