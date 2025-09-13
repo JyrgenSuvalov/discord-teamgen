@@ -311,7 +311,8 @@ async function handleTournamentOpen(
 	return createSuccessResponse(
 		`🏆 **Tournament ${tournament.id} is now open!**\n\n` +
 			`Players can now join using \`/t join\` and submit their ADR using \`/t set_adr <adr>\`\n` +
-			`Use \`/t show_adr\` to see current submissions.`,
+			`Use \`/t show_adr\` to see current submissions.\n` +
+			`Use \`/t help\` to see all available commands.`,
 		{ ephemeral: false },
 	);
 }
