@@ -443,7 +443,7 @@ async function handleSubmitAdr(
 		return createSuccessResponse(
 			`✅ **Your ADR has been submitted:** \`${params.adr}\`\n\n` +
 				`Use \`/tournament show_adr\` to see all current submissions.`,
-			{ ephemeral: true },
+			{ ephemeral: false },
 		);
 	}
 
