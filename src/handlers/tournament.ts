@@ -778,7 +778,7 @@ async function handleJoinTournament(
 			}
 		}
 
-		return createSuccessResponse(message, { ephemeral: isAdminAction });
+		return createSuccessResponse(message, { ephemeral: false });
 	} catch (error) {
 		if (error instanceof TournamentError) {
 			return createErrorResponse(error.message, { title: "Tournament Error" });
