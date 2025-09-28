@@ -422,7 +422,7 @@ async function handleSubmitAdr(
 		const lockText = shouldLock ? " and **locked**" : "";
 		return createSuccessResponse(
 			`✅ **ADR submitted${lockText}** for <@${params.player}>: \`${params.adr}\`\n\n` +
-				`Use \`/tournament show_adr\` to see all current submissions.`,
+				`Use \`/t show_adr\` to see all current submissions.`,
 			{ ephemeral: false },
 		);
 	}
@@ -443,7 +443,7 @@ async function handleSubmitAdr(
 
 		return createSuccessResponse(
 			`✅ **Your ADR has been submitted:** \`${params.adr}\`\n\n` +
-				`Use \`/tournament show_adr\` to see all current submissions.`,
+				`Use \`/t show_adr\` to see all current submissions.`,
 			{ ephemeral: false },
 		);
 	}
@@ -468,7 +468,7 @@ async function handleShowAdr(
 	if (playerAdrs.length === 0) {
 		return createSuccessResponse(
 			`📊 **No players have joined the tournament yet.**\n\n` +
-				`Players can submit their ADR using \`/tournament set_adr <adr>\``,
+				`Players can submit their ADR using \`/t set_adr <adr>\``,
 			{ ephemeral: false },
 		);
 	}
@@ -533,7 +533,7 @@ async function handleGenerateTeams(
 
 		return createSuccessResponse(
 			`🔒 **Teams have been locked.**\n\n` +
-				`Teams cannot be regenerated until unlocked. Use \`/tournament generate_teams unlock\` to unlock.`,
+				`Teams cannot be regenerated until unlocked. Use \`/t generate_teams unlock\` to unlock.`,
 			{ ephemeral: false },
 		);
 	}
@@ -543,7 +543,7 @@ async function handleGenerateTeams(
 
 		return createSuccessResponse(
 			`🔓 **Teams have been unlocked.**\n\n` +
-				`Teams can now be regenerated using \`/tournament generate_teams\`.`,
+				`Teams can now be regenerated using \`/t generate_teams\`.`,
 			{ ephemeral: false },
 		);
 	}
@@ -569,7 +569,7 @@ async function handleGenerateTeams(
 		message += "\n";
 	}
 
-	message += `Use \`/tournament generate_teams lock\` to lock teams and prevent regeneration.`;
+	message += `Use \`/t generate_teams lock\` to lock teams and prevent regeneration.`;
 
 	return createSuccessResponse(message, { ephemeral: false });
 }
@@ -587,7 +587,7 @@ async function handleShowTeams(
 	if (!teamsExist) {
 		return createSuccessResponse(
 			`🎯 **No teams have been generated yet.**\n\n` +
-				`Admins can generate teams using \`/tournament generate_teams\` once all players have submitted their ADRs.`,
+				`Admins can generate teams using \`/t generate_teams\` once all players have submitted their ADRs.`,
 			{ ephemeral: false },
 		);
 	}
@@ -611,7 +611,7 @@ async function handleShowTeams(
 	if (teamsLocked) {
 		message += `🔒 Teams are **locked** and cannot be regenerated.`;
 	} else {
-		message += `🔓 Teams can be regenerated using \`/tournament generate_teams\`.`;
+		message += `🔓 Teams can be regenerated using \`/t generate_teams\`.`;
 	}
 
 	return createSuccessResponse(message, { ephemeral: false });
