@@ -473,11 +473,20 @@ async function handleShowAdr(
 		);
 	}
 
-	// Sort players by status (submitted first) then by username
+	// Sort players by status (submitted first), then by ADR descending for submitted players, then by username for pending players
 	const sortedPlayers = playerAdrs.sort((a, b) => {
 		if (a.status !== b.status) {
 			return a.status === "submitted" ? -1 : 1;
 		}
+
+		if (a.status === "submitted" && b.status === "submitted") {
+			// Both players have submitted ADRs - sort by ADR in descending order
+			const adrA = a.adr ?? 0;
+			const adrB = b.adr ?? 0;
+			return adrB - adrA; // Descending order (highest ADR first)
+		}
+
+		// Both are pending or fallback - sort by username alphabetically
 		return a.username.localeCompare(b.username);
 	});
 
