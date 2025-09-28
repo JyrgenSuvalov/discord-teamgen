@@ -13,7 +13,7 @@ export const TournamentCloseSchema = z.object({});
 export const SetAdrSchema = z.object({
 	adr: z
 		.number()
-		.min(0, "ADR must be non-negative")
+		.min(0.01, "ADR must be greater than 0")
 		.max(999.99, "ADR cannot exceed 999.99")
 		.refine(
 			(val) => Number.isFinite(val) && Number(val.toFixed(2)) === val,

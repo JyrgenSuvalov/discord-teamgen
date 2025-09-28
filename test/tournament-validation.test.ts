@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
 	TournamentOpenSchema,
 	TournamentCloseSchema,
-	SubmitAdrSchema,
+	SetAdrSchema,
 	ShowAdrSchema,
 	GenerateTeamsSchema,
 	ShowTeamsSchema,
@@ -42,14 +42,14 @@ describe("Tournament Validation Schemas", () => {
 		});
 	});
 
-	describe("SubmitAdrSchema", () => {
+	describe("SetAdrSchema", () => {
 		it("should validate valid ADR", () => {
-			const result = SubmitAdrSchema.parse({ adr: 85.5 });
+			const result = SetAdrSchema.parse({ adr: 85.5 });
 			expect(result).toEqual({ adr: 85.5 });
 		});
 
 		it("should validate ADR with player and action", () => {
-			const result = SubmitAdrSchema.parse({
+			const result = SetAdrSchema.parse({
 				adr: 90.25,
 				player: "123456789",
 				action: "lock",
@@ -62,41 +62,47 @@ describe("Tournament Validation Schemas", () => {
 		});
 
 		it("should reject negative ADR", () => {
-			expect(() => SubmitAdrSchema.parse({ adr: -5 })).toThrow(
-				"ADR must be non-negative",
+			expect(() => SetAdrSchema.parse({ adr: -5 })).toThrow(
+				"ADR must be greater than 0",
+			);
+		});
+
+		it("should reject ADR of 0", () => {
+			expect(() => SetAdrSchema.parse({ adr: 0 })).toThrow(
+				"ADR must be greater than 0",
 			);
 		});
 
 		it("should reject ADR over 999.99", () => {
-			expect(() => SubmitAdrSchema.parse({ adr: 1000 })).toThrow(
+			expect(() => SetAdrSchema.parse({ adr: 1000 })).toThrow(
 				"ADR cannot exceed 999.99",
 			);
 		});
 
 		it("should reject ADR with more than 2 decimal places", () => {
-			expect(() => SubmitAdrSchema.parse({ adr: 85.123 })).toThrow(
+			expect(() => SetAdrSchema.parse({ adr: 85.123 })).toThrow(
 				"ADR must have at most 2 decimal places",
 			);
 		});
 
 		it("should accept ADR with exactly 2 decimal places", () => {
-			const result = SubmitAdrSchema.parse({ adr: 85.12 });
+			const result = SetAdrSchema.parse({ adr: 85.12 });
 			expect(result.adr).toBe(85.12);
 		});
 
 		it("should accept integer ADR", () => {
-			const result = SubmitAdrSchema.parse({ adr: 85 });
+			const result = SetAdrSchema.parse({ adr: 85 });
 			expect(result.adr).toBe(85);
 		});
 
 		it("should validate unlock action", () => {
-			const result = SubmitAdrSchema.parse({ adr: 85, action: "unlock" });
+			const result = SetAdrSchema.parse({ adr: 85, action: "unlock" });
 			expect(result.action).toBe("unlock");
 		});
 
 		it("should reject invalid action", () => {
 			expect(() =>
-				SubmitAdrSchema.parse({ adr: 85, action: "invalid" }),
+				SetAdrSchema.parse({ adr: 85, action: "invalid" }),
 			).toThrow();
 		});
 	});
@@ -535,7 +541,7 @@ describe("Command Parameter Validation", () => {
 describe("Error Handling", () => {
 	it("should throw ValidationError with proper error details", () => {
 		try {
-			validateData(SubmitAdrSchema, { adr: -5 });
+			validateData(SetAdrSchema, { adr: -5 });
 		} catch (error) {
 			expect(error).toBeInstanceOf(ValidationError);
 			expect((error as ValidationError).errors).toBeDefined();
@@ -545,7 +551,7 @@ describe("Error Handling", () => {
 
 	it("should handle complex validation errors", () => {
 		try {
-			validateData(SubmitAdrSchema, {
+			validateData(SetAdrSchema, {
 				adr: 1000.123, // Too high and too many decimals
 				action: "invalid", // Invalid action
 			});

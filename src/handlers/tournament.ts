@@ -387,6 +387,12 @@ async function handleSubmitAdr(
 
 	if (params.player && params.adr !== undefined) {
 		// Admin submitting ADR for another player
+		// Validate ADR parameter first
+		const validatedParams = validateTournamentCommandParams(
+			"set_adr",
+			params,
+		) as SetAdr;
+
 		// Extract user info from the interaction options
 		const subcommandOptions = interaction.data?.options?.[0]?.options || [];
 		const playerOption = subcommandOptions.find((opt) => opt.name === "player");
@@ -415,13 +421,13 @@ async function handleSubmitAdr(
 			params.player,
 			targetUser.username,
 			targetUser.global_name || undefined,
-			params.adr,
+			validatedParams.adr,
 			shouldLock,
 		);
 
 		const lockText = shouldLock ? " and **locked**" : "";
 		return createSuccessResponse(
-			`✅ **ADR submitted${lockText}** for <@${params.player}>: \`${params.adr}\`\n\n` +
+			`✅ **ADR submitted${lockText}** for <@${params.player}>: \`${validatedParams.adr}\`\n\n` +
 				`Use \`/t show_adr\` to see all current submissions.`,
 			{ ephemeral: false },
 		);

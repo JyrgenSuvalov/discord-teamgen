@@ -470,7 +470,7 @@ export class TournamentService {
 				player_id: tp.playerId,
 				username: tp.player?.username || "Unknown",
 				display_name: tp.player?.displayName || undefined,
-				adr: tp.adr || undefined,
+				adr: tp.adr ?? undefined,
 				adr_locked: tp.adrLocked,
 				status:
 					tp.adr !== null && tp.adr !== undefined ? "submitted" : "pending",
@@ -768,7 +768,7 @@ export class TournamentService {
 					player_id: tp.playerId,
 					username: tp.player?.username || "Unknown",
 					display_name: tp.player?.displayName || undefined,
-					adr: tp.adr || undefined,
+					adr: tp.adr ?? undefined,
 					adr_locked: tp.adrLocked,
 					status:
 						tp.adr !== null && tp.adr !== undefined ? "submitted" : "pending",

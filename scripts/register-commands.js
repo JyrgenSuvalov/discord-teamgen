@@ -38,7 +38,7 @@ const commands = [
 				options: [
 					{
 						name: "adr",
-						description: "Your ADR value (0-999.99)",
+						description: "Your ADR value (0.01-999.99)",
 						type: 10, // NUMBER type
 						required: false,
 					},
