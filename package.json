@@ -18,19 +18,19 @@
 		"biome:ci": "biome ci src/"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.2.3",
+		"@biomejs/biome": "2.4.14",
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"@types/node": "^24.3.0",
-		"drizzle-kit": "^0.31.4",
+		"drizzle-kit": "^0.31.10",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
-		"wrangler": "^4.33.1"
+		"wrangler": "^4.90.0"
 	},
 	"dependencies": {
-		"@hono/zod-validator": "^0.7.2",
+		"@hono/zod-validator": "^0.7.6",
 		"@js-temporal/polyfill": "^0.5.1",
-		"drizzle-orm": "^0.44.5",
-		"hono": "^4.9.5",
-		"zod": "^4.1.5"
+		"drizzle-orm": "^0.45.2",
+		"hono": "^4.12.18",
+		"zod": "^4.4.3"
 	}
 }
