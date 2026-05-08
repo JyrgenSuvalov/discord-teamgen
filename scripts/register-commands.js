@@ -16,6 +16,50 @@ const commands = [
 		description: "Manage CS2 scrim tournaments",
 		options: [
 			{
+				name: "help",
+				description: "Show tournament command help and usage guide",
+				type: 1, // SUB_COMMAND
+			},
+			{
+				name: "set_adr",
+				description: "Submit your ADR for the current tournament",
+				type: 1, // SUB_COMMAND
+				options: [
+					{
+						name: "adr",
+						description: "Your ADR value (0.01-999.99)",
+						type: 10, // NUMBER type
+						required: true,
+					},
+				],
+			},
+			{
+				name: "show_adr",
+				description: "Show all player ADRs for the current tournament",
+				type: 1, // SUB_COMMAND
+			},
+			{
+				name: "show_teams",
+				description: "Show current teams for the tournament",
+				type: 1, // SUB_COMMAND
+			},
+			{
+				name: "join",
+				description: "Join the current tournament",
+				type: 1, // SUB_COMMAND
+			},
+			{
+				name: "leave",
+				description: "Leave the current tournament",
+				type: 1, // SUB_COMMAND
+			},
+		],
+	},
+	{
+		name: "ta",
+		description: "Admin commands for managing CS2 scrim tournaments",
+		options: [
+			{
 				name: "open",
 				description: "Open a new tournament (Admin only)",
 				type: 1, // SUB_COMMAND
@@ -26,50 +70,33 @@ const commands = [
 				type: 1, // SUB_COMMAND
 			},
 			{
-				name: "help",
-				description: "Show tournament command help and usage guide",
-				type: 1, // SUB_COMMAND
-			},
-			{
 				name: "set_adr",
-				description:
-					"Set your ADR or manage player ADRs (Admin can set for others)",
+				description: "Submit or lock/unlock another player's ADR (Admin only)",
 				type: 1, // SUB_COMMAND
 				options: [
 					{
+						name: "player",
+						description: "Player to manage ADR for",
+						type: 6, // USER type
+						required: true,
+					},
+					{
 						name: "adr",
-						description: "Your ADR value (0.01-999.99)",
+						description: "ADR value to submit (0.01-999.99)",
 						type: 10, // NUMBER type
 						required: false,
 					},
 					{
-						name: "player",
-						description: "Player to submit ADR for (Admin only)",
-						type: 6, // USER type
-						required: false,
-					},
-					{
 						name: "action",
-						description: "Lock or unlock player ADR (Admin only)",
+						description: "Lock or unlock the player's ADR",
 						type: 3, // STRING type
 						required: false,
 						choices: [
-							{
-								name: "Lock ADR",
-								value: "lock",
-							},
-							{
-								name: "Unlock ADR",
-								value: "unlock",
-							},
+							{ name: "Lock ADR", value: "lock" },
+							{ name: "Unlock ADR", value: "unlock" },
 						],
 					},
 				],
-			},
-			{
-				name: "show_adr",
-				description: "Show all player ADRs for the current tournament",
-				type: 1, // SUB_COMMAND
 			},
 			{
 				name: "generate_teams",
@@ -83,14 +110,8 @@ const commands = [
 						type: 3, // STRING type
 						required: false,
 						choices: [
-							{
-								name: "Lock teams",
-								value: "lock",
-							},
-							{
-								name: "Unlock teams",
-								value: "unlock",
-							},
+							{ name: "Lock teams", value: "lock" },
+							{ name: "Unlock teams", value: "unlock" },
 						],
 					},
 					{
@@ -104,27 +125,17 @@ const commands = [
 				],
 			},
 			{
-				name: "show_teams",
-				description: "Show current teams for the tournament",
-				type: 1, // SUB_COMMAND
-			},
-			{
 				name: "join",
-				description: "Join the current tournament (Admin can join others)",
+				description: "Add another player to the current tournament (Admin only)",
 				type: 1, // SUB_COMMAND
 				options: [
 					{
 						name: "player",
-						description: "Player to join to tournament (Admin only)",
+						description: "Player to join to tournament",
 						type: 6, // USER type
-						required: false,
+						required: true,
 					},
 				],
-			},
-			{
-				name: "leave",
-				description: "Leave the current tournament",
-				type: 1, // SUB_COMMAND
 			},
 			{
 				name: "remove",
@@ -188,8 +199,6 @@ const commands = [
 						description: "Team ID to add player to (e.g., TEAM1, TEAM2)",
 						type: 3, // STRING type
 						required: true,
-						// Note: We could add choices here if we want to limit to specific team IDs
-						// but keeping it flexible for dynamic team generation
 					},
 				],
 			},

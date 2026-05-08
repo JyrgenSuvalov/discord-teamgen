@@ -258,7 +258,7 @@ app.post("/discord/webhook", async (c) => {
 
 			case DISCORD_INTERACTION_TYPES.APPLICATION_COMMAND:
 				// Handle slash commands
-				if (interaction.data?.name === "t") {
+				if (interaction.data?.name === "t" || interaction.data?.name === "ta") {
 					console.log("Handling tournament command");
 					return handleTournamentCommand(c);
 				} else {
@@ -400,7 +400,7 @@ app.get("/", (c) => {
 			health: "/health",
 		},
 		features: [
-			"Tournament management (/t open, /t close)",
+			"Tournament management (/ta open, /ta close)",
 			"Player ADR submission and tracking",
 			"Balanced team generation algorithms",
 			"Match result recording and history",

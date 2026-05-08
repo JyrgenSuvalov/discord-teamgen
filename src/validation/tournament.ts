@@ -86,7 +86,7 @@ export const ResultMatchSchema = z.object({
 // Base tournament interaction schema
 export const TournamentInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.string(),
@@ -117,7 +117,7 @@ export const TournamentInteractionSchema = z.object({
 // Specific subcommand interaction schemas
 export const TournamentOpenInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("open"),
@@ -129,7 +129,7 @@ export const TournamentOpenInteractionSchema = z.object({
 
 export const TournamentCloseInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("close"),
@@ -141,7 +141,7 @@ export const TournamentCloseInteractionSchema = z.object({
 
 export const SetAdrInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("set_adr"),
@@ -170,7 +170,7 @@ export const SetAdrInteractionSchema = z.object({
 
 export const ShowAdrInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("show_adr"),
@@ -182,7 +182,7 @@ export const ShowAdrInteractionSchema = z.object({
 
 export const GenerateTeamsInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("generate_teams"),
@@ -203,7 +203,7 @@ export const GenerateTeamsInteractionSchema = z.object({
 
 export const ShowTeamsInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("show_teams"),
@@ -215,7 +215,7 @@ export const ShowTeamsInteractionSchema = z.object({
 
 export const JoinTournamentInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("join"),
@@ -244,7 +244,7 @@ export const JoinTournamentInteractionSchema = z.object({
 
 export const LeaveTournamentInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.enum(["leave", "remove"]),
@@ -273,7 +273,7 @@ export const LeaveTournamentInteractionSchema = z.object({
 
 export const ExchangePlayersInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("exchange"),
@@ -300,7 +300,7 @@ export const ExchangePlayersInteractionSchema = z.object({
 
 export const AddPlayerToTeamInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("add"),
@@ -327,7 +327,7 @@ export const AddPlayerToTeamInteractionSchema = z.object({
 
 export const ResultMatchInteractionSchema = z.object({
 	data: z.object({
-		name: z.literal("t"),
+		name: z.enum(["t", "ta"]),
 		options: z.array(
 			z.object({
 				name: z.literal("result"),

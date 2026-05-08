@@ -548,7 +548,7 @@ async function handleGenerateTeams(
 
 		return createSuccessResponse(
 			`🔒 **Teams have been locked.**\n\n` +
-				`Teams cannot be regenerated until unlocked. Use \`/t generate_teams unlock\` to unlock.`,
+				`Teams cannot be regenerated until unlocked. Use \`/ta generate_teams unlock\` to unlock.`,
 			{ ephemeral: false },
 		);
 	}
@@ -558,7 +558,7 @@ async function handleGenerateTeams(
 
 		return createSuccessResponse(
 			`🔓 **Teams have been unlocked.**\n\n` +
-				`Teams can now be regenerated using \`/t generate_teams\`.`,
+				`Teams can now be regenerated using \`/ta generate_teams\`.`,
 			{ ephemeral: false },
 		);
 	}
@@ -584,7 +584,7 @@ async function handleGenerateTeams(
 		message += "\n";
 	}
 
-	message += `Use \`/t generate_teams lock\` to lock teams and prevent regeneration.`;
+	message += `Use \`/ta generate_teams lock\` to lock teams and prevent regeneration.`;
 
 	return createSuccessResponse(message, { ephemeral: false });
 }
@@ -602,7 +602,7 @@ async function handleShowTeams(
 	if (!teamsExist) {
 		return createSuccessResponse(
 			`🎯 **No teams have been generated yet.**\n\n` +
-				`Admins can generate teams using \`/t generate_teams\` once all players have submitted their ADRs.`,
+				`Admins can generate teams using \`/ta generate_teams\` once all players have submitted their ADRs.`,
 			{ ephemeral: false },
 		);
 	}
@@ -626,7 +626,7 @@ async function handleShowTeams(
 	if (teamsLocked) {
 		message += `🔒 Teams are **locked** and cannot be regenerated.`;
 	} else {
-		message += `🔓 Teams can be regenerated using \`/t generate_teams\`.`;
+		message += `🔓 Teams can be regenerated using \`/ta generate_teams\`.`;
 	}
 
 	return createSuccessResponse(message, { ephemeral: false });
@@ -1073,28 +1073,25 @@ async function handleHelp(): Promise<DiscordInteractionResponse> {
 	const helpText = `
 ## 🏆 **CS2 Tournament Commands**
 
-### **Tournament Management**
-• \`/t open\` - Open a new tournament *(Admin)*
-• \`/t close\` - Close current tournament *(Admin)*
+### **Player Commands** \`/t\`
 • \`/t help\` - Show this help message
-
-### **Player Management**
 • \`/t join\` - Join the current tournament
 • \`/t leave\` - Leave the current tournament
-• \`/t remove @player\` - Remove a player *(Admin)*
-
-### **ADR & Team Setup**
 • \`/t set_adr 85.5\` - Submit your ADR
 • \`/t show_adr\` - View all player ADRs
-• \`/t generate_teams\` - Create balanced teams *(Admin)*
 • \`/t show_teams\` - View current teams
 
-### **Team Management** *(Admin)*
-• \`/t add @player TEAM1\` - Add player to specific team
-• \`/t exchange @player1 @player2\` - Swap players between teams
-
-### **Match Recording** *(Admin)*
-• \`/t result TEAM1-16-14-TEAM2\` - Record match result
+### **Admin Commands** \`/ta\`
+*(only usable by configured admin roles)*
+• \`/ta open\` - Open a new tournament
+• \`/ta close\` - Close current tournament
+• \`/ta set_adr @player [adr] [lock/unlock]\` - Submit, lock, or unlock another player's ADR
+• \`/ta join @player\` - Add another player to the tournament
+• \`/ta remove @player\` - Remove a player from the tournament
+• \`/ta generate_teams [lock/unlock] [runs]\` - Create balanced teams or lock/unlock them
+• \`/ta add @player TEAM1\` - Add a player to a specific team
+• \`/ta exchange @player1 @player2\` - Swap two players between teams
+• \`/ta result TEAM1-16-14-TEAM2\` - Record a match result
 
 ### **Finding your ADR**
 One way to find your ADR is to log into popflash.site, click on your username in the top right corner and select My Profile. You can view your lifetime ADR or select a recent period. This only works if you have played matches on Popflash.
