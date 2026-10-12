@@ -35,6 +35,7 @@ const mockTournamentService = {
 	isTournamentOpen: vi.fn(),
 	allPlayersHaveAdr: vi.fn(),
 	getPlayersWithoutAdr: vi.fn(),
+	exchangePlayers: vi.fn(),
 };
 
 const mockPermissionService = {
@@ -861,6 +862,73 @@ describe("Tournament Command Handler", () => {
 
 			expect(responseData.data?.embeds?.[0]?.title).toBe("Validation Error");
 			expect(mockTournamentService.recordMatch).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Exchange Players Command", () => {
+		it("should report each player's original and new team", async () => {
+			mockPermissionService.requireAdminPermission.mockResolvedValue(undefined);
+			// Service returns the teams the players are on after the exchange
+			mockTournamentService.exchangePlayers.mockResolvedValue({
+				player1Team: "TEAM2",
+				player2Team: "TEAM1",
+			});
+
+			const commandInteraction = {
+				type: DISCORD_INTERACTION_TYPES.APPLICATION_COMMAND,
+				id: "test-id",
+				application_id: "test-app-id",
+				token: "test-token",
+				version: 1,
+				data: {
+					id: "tournament-command-id",
+					name: "ta",
+					options: [
+						{
+							name: "exchange",
+							type: 1,
+							options: [
+								{ name: "player1", type: 6, value: "user-1" },
+								{ name: "player2", type: 6, value: "user-2" },
+							],
+						},
+					],
+					resolved: {
+						users: {
+							"user-1": { id: "user-1", username: "one" },
+							"user-2": { id: "user-2", username: "two" },
+						},
+					},
+				},
+				member: {
+					user: { id: "admin-123", username: "admin" },
+					roles: ["123456789"],
+					joined_at: "2023-01-01T00:00:00Z",
+				},
+			};
+
+			vi.mocked(getDiscordBody).mockReturnValue(commandInteraction);
+
+			const response = await app.request(
+				"/webhook",
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(commandInteraction),
+				},
+				mockEnv,
+			);
+
+			expect(response.status).toBe(200);
+			const responseData =
+				(await response.json()) as DiscordInteractionResponse;
+
+			expect(responseData.data?.content).toContain(
+				"<@user-1> moved from **TEAM1** to **TEAM2**",
+			);
+			expect(responseData.data?.content).toContain(
+				"<@user-2> moved from **TEAM2** to **TEAM1**",
+			);
 		});
 	});
 
