@@ -26,8 +26,8 @@ describe("TeamGenerationService", () => {
 			const service = new TeamGenerationService();
 			const config = service.getConfiguration();
 
-			expect(config.defaultRuns).toBe(500);
-			expect(config.maxRuns).toBe(1000);
+			expect(config.defaultRuns).toBe(200);
+			expect(config.maxRuns).toBe(200);
 			expect(config.teamSize).toBe(5);
 		});
 
@@ -51,7 +51,7 @@ describe("TeamGenerationService", () => {
 			const config = service.getConfiguration();
 
 			expect(config.defaultRuns).toBe(200);
-			expect(config.maxRuns).toBe(1000);
+			expect(config.maxRuns).toBe(200);
 			expect(config.teamSize).toBe(5);
 		});
 	});
@@ -106,7 +106,7 @@ describe("TeamGenerationService", () => {
 			expect(result.teams[0].average_adr).toBe(70); // 350 / 5
 			expect(result.teams[1].average_adr).toBe(120); // 600 / 5
 			expect(result.adr_difference).toBe(250);
-			expect(result.optimization_runs).toBe(500); // default
+			expect(result.optimization_runs).toBe(200); // default
 		});
 
 		it("should use custom optimization runs", async () => {
@@ -117,7 +117,7 @@ describe("TeamGenerationService", () => {
 			expect(mockOptimizeTeams).toHaveBeenCalledWith(
 				expect.any(Array),
 				5, // team size
-				1000, // max no improvement
+				100, // max iterations: min(500, 10000 / 100)
 				100, // custom runs
 			);
 		});
@@ -144,8 +144,8 @@ describe("TeamGenerationService", () => {
 			expect(mockOptimizeTeams).toHaveBeenCalledWith(
 				expectedTeamgenPlayers,
 				5,
-				1000,
-				500,
+				50, // max iterations: min(500, 10000 / 200)
+				200,
 			);
 		});
 
@@ -275,9 +275,9 @@ describe("TeamGenerationService", () => {
 			const players = createMockPlayers(5);
 
 			await expect(
-				service.generateBalancedTeams(players, 1001),
+				service.generateBalancedTeams(players, 201),
 			).rejects.toThrow(
-				"Optimization runs (1001) exceeds maximum allowed (1000)",
+				"Optimization runs (201) exceeds maximum allowed (200)",
 			);
 		});
 
