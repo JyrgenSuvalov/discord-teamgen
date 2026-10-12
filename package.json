@@ -28,10 +28,10 @@
 		"wrangler": "^4.90.0"
 	},
 	"dependencies": {
-		"@hono/zod-validator": "^0.7.6",
+		"@hono/zod-validator": "^0.9.1",
 		"@js-temporal/polyfill": "^0.5.1",
-		"drizzle-orm": "^0.45.2",
-		"hono": "^4.12.18",
-		"zod": "^4.4.3"
+		"drizzle-orm": "^0.45.3",
+		"hono": "^4.13.13",
+		"zod": "^4.6.5"
 	}
 }
