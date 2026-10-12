@@ -19,13 +19,13 @@
 		"biome:ci": "biome ci src/"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.14",
+		"@biomejs/biome": "2.5.15",
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"@types/node": "^24.3.0",
-		"drizzle-kit": "^0.31.10",
+		"drizzle-kit": "^0.31.11",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
-		"wrangler": "^4.90.0"
+		"wrangler": "^4.147.0"
 	},
 	"dependencies": {
 		"@hono/zod-validator": "^0.9.1",
