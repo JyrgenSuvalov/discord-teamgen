@@ -973,8 +973,8 @@ async function handleExchangePlayers(
 
 		return createSuccessResponse(
 			`🔄 **Players exchanged successfully!**\n\n` +
-				`<@${player1Id}> moved from **${result.player1Team}** to **${result.player2Team}**\n` +
-				`<@${player2Id}> moved from **${result.player2Team}** to **${result.player1Team}**`,
+				`<@${player1Id}> moved from **${result.player2Team}** to **${result.player1Team}**\n` +
+				`<@${player2Id}> moved from **${result.player1Team}** to **${result.player2Team}**`,
 			{ ephemeral: false },
 		);
 	} catch (error) {
