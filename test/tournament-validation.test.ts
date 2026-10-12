@@ -8,11 +8,11 @@ import {
 	ShowTeamsSchema,
 	ResultMatchSchema,
 	TournamentInteractionSchema,
-	SubmitAdrInteractionSchema,
+	SetAdrInteractionSchema,
 	GenerateTeamsInteractionSchema,
 	ResultMatchInteractionSchema,
 	extractTournamentSubcommand,
-	extractSubmitAdrParams,
+	extractSetAdrParams,
 	extractGenerateTeamsParams,
 	extractResultMatchParams,
 	parseMatchString,
@@ -110,7 +110,7 @@ describe("Tournament Validation Schemas", () => {
 	describe("GenerateTeamsSchema", () => {
 		it("should validate with default runs", () => {
 			const result = GenerateTeamsSchema.parse({});
-			expect(result.runs).toBe(500);
+			expect(result.runs).toBe(200);
 		});
 
 		it("should validate with custom runs", () => {
@@ -129,9 +129,9 @@ describe("Tournament Validation Schemas", () => {
 			);
 		});
 
-		it("should reject runs greater than 1000", () => {
-			expect(() => GenerateTeamsSchema.parse({ runs: 1001 })).toThrow(
-				"Cannot exceed 1000 optimization runs",
+		it("should reject runs greater than 200", () => {
+			expect(() => GenerateTeamsSchema.parse({ runs: 201 })).toThrow(
+				"Cannot exceed 200 optimization runs",
 			);
 		});
 
@@ -182,7 +182,7 @@ describe("Tournament Discord Interaction Schemas", () => {
 		it("should validate basic tournament interaction", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "open",
@@ -192,18 +192,18 @@ describe("Tournament Discord Interaction Schemas", () => {
 				},
 			};
 			const result = TournamentInteractionSchema.parse(interaction);
-			expect(result.data.name).toBe("tournament");
+			expect(result.data.name).toBe("t");
 		});
 	});
 
-	describe("SubmitAdrInteractionSchema", () => {
-		it("should validate submit_adr interaction with ADR only", () => {
+	describe("SetAdrInteractionSchema", () => {
+		it("should validate set_adr interaction with ADR only", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
-							name: "submit_adr" as const,
+							name: "set_adr" as const,
 							type: DISCORD_OPTION_TYPES.SUB_COMMAND,
 							options: [
 								{
@@ -216,17 +216,17 @@ describe("Tournament Discord Interaction Schemas", () => {
 					],
 				},
 			};
-			const result = SubmitAdrInteractionSchema.parse(interaction);
-			expect(result.data.options[0].name).toBe("submit_adr");
+			const result = SetAdrInteractionSchema.parse(interaction);
+			expect(result.data.options[0].name).toBe("set_adr");
 		});
 
-		it("should validate submit_adr interaction with user mention", () => {
+		it("should validate set_adr interaction with user mention", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
-							name: "submit_adr" as const,
+							name: "set_adr" as const,
 							type: DISCORD_OPTION_TYPES.SUB_COMMAND,
 							options: [
 								{
@@ -248,7 +248,7 @@ describe("Tournament Discord Interaction Schemas", () => {
 					],
 				},
 			};
-			const result = SubmitAdrInteractionSchema.parse(interaction);
+			const result = SetAdrInteractionSchema.parse(interaction);
 			expect(result.data.options[0].options?.[0].user?.id).toBe("123456789");
 		});
 	});
@@ -259,7 +259,7 @@ describe("Parameter Extraction Utilities", () => {
 		it("should extract subcommand name", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "open",
@@ -273,14 +273,14 @@ describe("Parameter Extraction Utilities", () => {
 		});
 	});
 
-	describe("extractSubmitAdrParams", () => {
+	describe("extractSetAdrParams", () => {
 		it("should extract ADR parameter", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
-							name: "submit_adr" as const,
+							name: "set_adr" as const,
 							type: DISCORD_OPTION_TYPES.SUB_COMMAND,
 							options: [
 								{
@@ -293,17 +293,17 @@ describe("Parameter Extraction Utilities", () => {
 					],
 				},
 			};
-			const params = extractSubmitAdrParams(interaction);
+			const params = extractSetAdrParams(interaction);
 			expect(params.adr).toBe(85.5);
 		});
 
 		it("should extract player and action parameters", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
-							name: "submit_adr" as const,
+							name: "set_adr" as const,
 							type: DISCORD_OPTION_TYPES.SUB_COMMAND,
 							options: [
 								{
@@ -329,7 +329,7 @@ describe("Parameter Extraction Utilities", () => {
 					],
 				},
 			};
-			const params = extractSubmitAdrParams(interaction);
+			const params = extractSetAdrParams(interaction);
 			expect(params.player).toBe("123456789");
 			expect(params.adr).toBe(90.0);
 			expect(params.action).toBe("lock");
@@ -338,16 +338,16 @@ describe("Parameter Extraction Utilities", () => {
 		it("should handle missing options", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
-							name: "submit_adr" as const,
+							name: "set_adr" as const,
 							type: DISCORD_OPTION_TYPES.SUB_COMMAND,
 						},
 					],
 				},
 			};
-			const params = extractSubmitAdrParams(interaction);
+			const params = extractSetAdrParams(interaction);
 			expect(params).toEqual({});
 		});
 	});
@@ -356,7 +356,7 @@ describe("Parameter Extraction Utilities", () => {
 		it("should extract runs parameter", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "generate_teams" as const,
@@ -379,7 +379,7 @@ describe("Parameter Extraction Utilities", () => {
 		it("should extract action parameter", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "generate_teams" as const,
@@ -404,7 +404,7 @@ describe("Parameter Extraction Utilities", () => {
 		it("should extract match string parameter", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "result" as const,
@@ -427,7 +427,7 @@ describe("Parameter Extraction Utilities", () => {
 		it("should throw error when match string is missing", () => {
 			const interaction = {
 				data: {
-					name: "tournament" as const,
+					name: "t" as const,
 					options: [
 						{
 							name: "result" as const,
@@ -503,8 +503,8 @@ describe("Command Parameter Validation", () => {
 			expect(result).toEqual({});
 		});
 
-		it("should validate submit_adr command", () => {
-			const result = validateTournamentCommandParams("submit_adr", {
+		it("should validate set_adr command", () => {
+			const result = validateTournamentCommandParams("set_adr", {
 				adr: 85.5,
 			});
 			expect(result).toEqual({ adr: 85.5 });
@@ -532,7 +532,7 @@ describe("Command Parameter Validation", () => {
 
 		it("should throw ValidationError for invalid parameters", () => {
 			expect(() =>
-				validateTournamentCommandParams("submit_adr", { adr: -5 }),
+				validateTournamentCommandParams("set_adr", { adr: -5 }),
 			).toThrow();
 		});
 	});

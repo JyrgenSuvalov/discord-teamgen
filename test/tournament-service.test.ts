@@ -358,6 +358,7 @@ describe("TournamentService - Foundation", () => {
 					id: "player1",
 					username: "testuser",
 					displayName: "Test User",
+					defaultAdr: 85.5,
 				});
 				expect(mockPlayerRepo.upsertTournamentPlayer).toHaveBeenCalledWith({
 					tournamentId: "2025-08-31-1",
@@ -411,6 +412,7 @@ describe("TournamentService - Foundation", () => {
 					id: "player1",
 					username: "testuser",
 					displayName: "Test User",
+					defaultAdr: 85.5,
 				});
 				expect(mockPlayerRepo.upsertTournamentPlayer).toHaveBeenCalledWith({
 					tournamentId: "2025-08-31-1",
@@ -708,43 +710,36 @@ describe("TournamentService - Foundation", () => {
 			];
 
 			it("should generate teams when all conditions are met", async () => {
+				// Team generation returns players keyed by display name, without IDs
+				const generatedPlayers = [
+					{ id: "player1", name: "User One", adr: 85.5 },
+					{ id: "player2", name: "User Two", adr: 90.2 },
+					{ id: "player3", name: "User Three", adr: 78.8 },
+					{ id: "player4", name: "User Four", adr: 82.1 },
+					{ id: "player5", name: "User Five", adr: 88.9 },
+				];
 				const mockGeneratedTeams = [
 					{
 						id: "TEAM1",
-						players: [
-							{
-								id: "player1",
-								username: "user1",
-								display_name: "User One",
-								adr: 85.5,
-							},
-							{
-								id: "player2",
-								username: "user2",
-								display_name: "User Two",
-								adr: 90.2,
-							},
-							{
-								id: "player3",
-								username: "user3",
-								display_name: "User Three",
-								adr: 78.8,
-							},
-							{
-								id: "player4",
-								username: "user4",
-								display_name: "User Four",
-								adr: 82.1,
-							},
-							{
-								id: "player5",
-								username: "user5",
-								display_name: "User Five",
-								adr: 88.9,
-							},
-						],
+						players: generatedPlayers.map(({ name, adr }) => ({
+							id: "",
+							username: name,
+							display_name: name,
+							adr,
+						})),
 						average_adr: 85.1,
 						total_adr: 425.5,
+					},
+				];
+				const expectedTeams = [
+					{
+						...mockGeneratedTeams[0],
+						players: generatedPlayers.map(({ id, name, adr }) => ({
+							id,
+							username: name,
+							display_name: name,
+							adr,
+						})),
 					},
 				];
 
@@ -761,7 +756,7 @@ describe("TournamentService - Foundation", () => {
 
 				const result = await tournamentService.generateTeams();
 
-				expect(result).toEqual(mockGeneratedTeams);
+				expect(result).toEqual(expectedTeams);
 				expect(mockTeamGenService.generateBalancedTeams).toHaveBeenCalledWith(
 					expect.arrayContaining([
 						expect.objectContaining({ id: "player1", adr: 85.5 }),

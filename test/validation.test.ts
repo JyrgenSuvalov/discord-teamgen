@@ -1,18 +1,27 @@
 import { describe, it, expect } from "vitest";
+import { z } from "zod";
 import {
 	DiscordInteractionSchema,
-	PingCommandSchema,
 	ValidationError,
 	validateData,
 	safeValidateData,
 	extractCommandOptions,
 	getOptionValue,
 	isApplicationCommand,
-	isPingInteraction,
 	formatValidationErrorForDiscord,
 	EnvironmentSchema,
 	DISCORD_INTERACTION_TYPES,
 } from "../src/validation";
+import { isPingInteraction } from "../src/validation/utils";
+
+// Sample schema for exercising the generic validation helpers
+const MessageSchema = z.object({
+	message: z
+		.string()
+		.trim()
+		.min(1, "Message cannot be empty")
+		.max(2000, "Message cannot exceed 2000 characters"),
+});
 
 describe("Discord Validation Schemas", () => {
 	describe("DiscordInteractionSchema", () => {
@@ -68,52 +77,12 @@ describe("Discord Validation Schemas", () => {
 			expect(result.type).toBe(1);
 		});
 	});
-
-	describe("PingCommandSchema", () => {
-		it("should validate valid ping command", () => {
-			const validCommand = { message: "Hello World!" };
-
-			const result = validateData(PingCommandSchema, validCommand);
-			expect(result.message).toBe("Hello World!");
-		});
-
-		it("should trim whitespace from message", () => {
-			const commandWithWhitespace = { message: "  Hello World!  " };
-
-			const result = validateData(PingCommandSchema, commandWithWhitespace);
-			expect(result.message).toBe("Hello World!");
-		});
-
-		it("should reject empty message", () => {
-			const emptyCommand = { message: "" };
-
-			expect(() => validateData(PingCommandSchema, emptyCommand)).toThrow(
-				ValidationError,
-			);
-		});
-
-		it("should reject message that is too long", () => {
-			const longMessage = "a".repeat(2001);
-			const longCommand = { message: longMessage };
-
-			expect(() => validateData(PingCommandSchema, longCommand)).toThrow(
-				ValidationError,
-			);
-		});
-
-		it("should accept message at max length", () => {
-			const maxMessage = "a".repeat(2000);
-			const maxCommand = { message: maxMessage };
-
-			expect(() => validateData(PingCommandSchema, maxCommand)).not.toThrow();
-		});
-	});
 });
 
 describe("Validation Utilities", () => {
 	describe("validateData", () => {
 		it("should return parsed data for valid input", () => {
-			const schema = PingCommandSchema;
+			const schema = MessageSchema;
 			const data = { message: "test" };
 
 			const result = validateData(schema, data);
@@ -121,7 +90,7 @@ describe("Validation Utilities", () => {
 		});
 
 		it("should throw ValidationError for invalid input", () => {
-			const schema = PingCommandSchema;
+			const schema = MessageSchema;
 			const data = { message: "" };
 
 			expect(() => validateData(schema, data)).toThrow(ValidationError);
@@ -130,7 +99,7 @@ describe("Validation Utilities", () => {
 
 	describe("safeValidateData", () => {
 		it("should return success result for valid input", () => {
-			const schema = PingCommandSchema;
+			const schema = MessageSchema;
 			const data = { message: "test" };
 
 			const result = safeValidateData(schema, data);
@@ -141,7 +110,7 @@ describe("Validation Utilities", () => {
 		});
 
 		it("should return error result for invalid input", () => {
-			const schema = PingCommandSchema;
+			const schema = MessageSchema;
 			const data = { message: "" };
 
 			const result = safeValidateData(schema, data);
@@ -235,7 +204,7 @@ describe("Validation Utilities", () => {
 	describe("formatValidationErrorForDiscord", () => {
 		it("should format single error message", () => {
 			try {
-				validateData(PingCommandSchema, { message: "" });
+				validateData(MessageSchema, { message: "" });
 			} catch (error) {
 				if (error instanceof ValidationError) {
 					const formatted = formatValidationErrorForDiscord(error);
@@ -246,7 +215,7 @@ describe("Validation Utilities", () => {
 
 		it("should format multiple error messages", () => {
 			try {
-				validateData(PingCommandSchema, { message: "a".repeat(2001) });
+				validateData(MessageSchema, { message: "a".repeat(2001) });
 			} catch (error) {
 				if (error instanceof ValidationError) {
 					const formatted = formatValidationErrorForDiscord(error);
@@ -282,25 +251,25 @@ describe("Validation Utilities", () => {
 
 	describe("Edge Cases and Error Handling", () => {
 		it("should handle null input gracefully", () => {
-			expect(() => validateData(PingCommandSchema, null)).toThrow(
+			expect(() => validateData(MessageSchema, null)).toThrow(
 				ValidationError,
 			);
 		});
 
 		it("should handle undefined input gracefully", () => {
-			expect(() => validateData(PingCommandSchema, undefined)).toThrow(
+			expect(() => validateData(MessageSchema, undefined)).toThrow(
 				ValidationError,
 			);
 		});
 
 		it("should handle non-object input", () => {
-			expect(() => validateData(PingCommandSchema, "not an object")).toThrow(
+			expect(() => validateData(MessageSchema, "not an object")).toThrow(
 				ValidationError,
 			);
-			expect(() => validateData(PingCommandSchema, 123)).toThrow(
+			expect(() => validateData(MessageSchema, 123)).toThrow(
 				ValidationError,
 			);
-			expect(() => validateData(PingCommandSchema, true)).toThrow(
+			expect(() => validateData(MessageSchema, true)).toThrow(
 				ValidationError,
 			);
 		});
@@ -308,7 +277,7 @@ describe("Validation Utilities", () => {
 		it("should handle message with only whitespace", () => {
 			const whitespaceCommand = { message: "   \n\t   " };
 
-			expect(() => validateData(PingCommandSchema, whitespaceCommand)).toThrow(
+			expect(() => validateData(MessageSchema, whitespaceCommand)).toThrow(
 				ValidationError,
 			);
 		});
@@ -317,7 +286,7 @@ describe("Validation Utilities", () => {
 			const specialCharsCommand = { message: "!@#$%^&*()_+-=[]{}|;:,.<>?" };
 
 			expect(() =>
-				validateData(PingCommandSchema, specialCharsCommand),
+				validateData(MessageSchema, specialCharsCommand),
 			).not.toThrow();
 		});
 
@@ -325,7 +294,7 @@ describe("Validation Utilities", () => {
 			const unicodeCommand = { message: "🎉 Hello 世界 🌍" };
 
 			expect(() =>
-				validateData(PingCommandSchema, unicodeCommand),
+				validateData(MessageSchema, unicodeCommand),
 			).not.toThrow();
 		});
 
@@ -333,7 +302,7 @@ describe("Validation Utilities", () => {
 			const multilineCommand = { message: "Line 1\nLine 2\nLine 3" };
 
 			expect(() =>
-				validateData(PingCommandSchema, multilineCommand),
+				validateData(MessageSchema, multilineCommand),
 			).not.toThrow();
 		});
 
@@ -427,7 +396,7 @@ describe("Validation Utilities", () => {
 			// Create a ValidationError by triggering a validation failure
 			let circularError: ValidationError;
 			try {
-				validateData(PingCommandSchema, { message: "" });
+				validateData(MessageSchema, { message: "" });
 			} catch (error) {
 				circularError = error as ValidationError;
 			}

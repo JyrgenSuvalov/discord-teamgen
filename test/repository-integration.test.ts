@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach } from "vitest";
-import { SELF } from "cloudflare:test";
+import { applyD1Migrations, env as testEnv } from "cloudflare:test";
 import {
 	createDatabase,
 	TournamentRepository,
@@ -19,10 +19,9 @@ describe("Repository Integration Tests", () => {
 
 	beforeAll(async () => {
 		// Get the test environment with real D1 database
-		env = (await import("cloudflare:test")).env as Env;
+		env = testEnv as unknown as Env;
 
-		// Run migrations to set up database schema
-		await setupDatabase();
+		await applyD1Migrations(testEnv.DB, testEnv.TEST_MIGRATIONS);
 	});
 
 	beforeEach(async () => {
@@ -41,41 +40,6 @@ describe("Repository Integration Tests", () => {
 		// Clean up test data after each test
 		await cleanupTestData();
 	});
-
-	async function setupDatabase() {
-		try {
-			// Run the migrations to create tables
-			const migrations = [
-				// Migration 0000: Create messages table
-				`CREATE TABLE IF NOT EXISTS messages (id text PRIMARY KEY NOT NULL, user_id text NOT NULL, username text NOT NULL, message text NOT NULL, created_at text DEFAULT CURRENT_TIMESTAMP NOT NULL)`,
-
-				// Migration 0001: Create tournament tables
-				`CREATE TABLE IF NOT EXISTS tournaments (id text PRIMARY KEY NOT NULL, status text DEFAULT 'open' NOT NULL, created_at text DEFAULT CURRENT_TIMESTAMP NOT NULL)`,
-
-				`CREATE TABLE IF NOT EXISTS players (id text PRIMARY KEY NOT NULL, username text, display_name text)`,
-
-				`CREATE TABLE IF NOT EXISTS tournament_players (tournament_id text NOT NULL, player_id text NOT NULL, adr real, adr_locked integer DEFAULT false NOT NULL, PRIMARY KEY(tournament_id, player_id), FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON UPDATE no action ON DELETE no action, FOREIGN KEY (player_id) REFERENCES players(id) ON UPDATE no action ON DELETE no action)`,
-
-				`CREATE TABLE IF NOT EXISTS teams (tournament_id text NOT NULL, id text NOT NULL, locked integer DEFAULT false NOT NULL, PRIMARY KEY(tournament_id, id), FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON UPDATE no action ON DELETE no action)`,
-
-				`CREATE TABLE IF NOT EXISTS team_players (team_id text NOT NULL, tournament_id text NOT NULL, player_id text NOT NULL, PRIMARY KEY(tournament_id, team_id, player_id), FOREIGN KEY (player_id) REFERENCES players(id) ON UPDATE no action ON DELETE no action)`,
-
-				`CREATE TABLE IF NOT EXISTS matches (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, tournament_id text NOT NULL, team1_id text NOT NULL, team2_id text NOT NULL, score1 integer NOT NULL, score2 integer NOT NULL, created_at text DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON UPDATE no action ON DELETE no action)`,
-
-				// Migration 0002: Create indexes
-				`CREATE INDEX IF NOT EXISTS tournament_status_idx ON tournaments(status)`,
-				`CREATE INDEX IF NOT EXISTS matches_tournament_idx ON matches(tournament_id)`,
-				`CREATE INDEX IF NOT EXISTS matches_created_at_idx ON matches(created_at)`,
-			];
-
-			for (const migration of migrations) {
-				await env.DB.exec(migration);
-			}
-		} catch (error) {
-			console.error("Failed to set up database:", error);
-			throw error;
-		}
-	}
 
 	async function cleanupTestData() {
 		try {

@@ -151,7 +151,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "open",
@@ -188,7 +188,7 @@ describe("Tournament Command Handler", () => {
 			expect(responseData.data?.content).toContain(
 				"Tournament 2025-08-31-1 is now open",
 			);
-			expect(responseData.data?.content).toContain("submit_adr");
+			expect(responseData.data?.content).toContain("set_adr");
 			expect(mockTournamentService.openTournament).toHaveBeenCalledOnce();
 		});
 
@@ -206,7 +206,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -228,7 +228,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(403);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -256,7 +256,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "close", type: 1 }],
 				},
 				member: {
@@ -301,10 +301,10 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
-							name: "submit_adr",
+							name: "set_adr",
 							type: 1,
 							options: [
 								{
@@ -367,10 +367,10 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
-							name: "submit_adr",
+							name: "set_adr",
 							type: 1,
 							options: [
 								{
@@ -460,10 +460,10 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
-							name: "submit_adr",
+							name: "set_adr",
 							type: 1,
 							options: [
 								{
@@ -494,7 +494,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -534,7 +534,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "show_adr", type: 1 }],
 				},
 				user: { id: "user-123", username: "user" },
@@ -591,7 +591,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "generate_teams",
@@ -645,7 +645,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "generate_teams",
@@ -715,7 +715,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "show_teams", type: 1 }],
 				},
 				user: { id: "user-123", username: "user" },
@@ -765,7 +765,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "result",
@@ -821,7 +821,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "result",
@@ -855,7 +855,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -884,7 +884,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -906,7 +906,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -931,7 +931,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -953,7 +953,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(403);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -969,7 +969,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "unknown_command", type: 1 }],
 				},
 				user: { id: "user-123", username: "user" },
@@ -987,7 +987,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -1005,10 +1005,10 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
-							name: "submit_adr",
+							name: "set_adr",
 							type: 1,
 							options: [{ name: "adr", type: 10, value: 85.5 }],
 						},
@@ -1029,7 +1029,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -1052,7 +1052,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -1074,7 +1074,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(500);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -1092,10 +1092,10 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
-							name: "submit_adr",
+							name: "set_adr",
 							type: 1,
 							options: [], // Missing required ADR parameter
 						},
@@ -1116,7 +1116,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -1133,7 +1133,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [
 						{
 							name: "generate_teams",
@@ -1167,7 +1167,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(400);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 
@@ -1192,7 +1192,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -1241,7 +1241,7 @@ describe("Tournament Command Handler", () => {
 				version: 1,
 				data: {
 					id: "tournament-command-id",
-					name: "tournament",
+					name: "t",
 					options: [{ name: "open", type: 1 }],
 				},
 				member: {
@@ -1263,7 +1263,7 @@ describe("Tournament Command Handler", () => {
 				mockEnv,
 			);
 
-			expect(response.status).toBe(403);
+			expect(response.status).toBe(200);
 			const responseData =
 				(await response.json()) as DiscordInteractionResponse;
 

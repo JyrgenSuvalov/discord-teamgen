@@ -24,7 +24,7 @@ describe("Discord Bot Application Integration", () => {
 		const data = (await response.json()) as any;
 
 		// In development environment, it returns detailed response
-		expect(data.name).toBe("Discord Ping Bot");
+		expect(data.name).toBe("CS2 Tournament Bot");
 		expect(data.version).toBe("1.0.0");
 		expect(data.endpoints.webhook).toBe("/discord/webhook");
 		expect(data.endpoints.health).toBe("/health");
