@@ -21,7 +21,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
-		"@types/node": "^24.3.0",
+		"@types/node": "^26.6.4",
 		"drizzle-kit": "^0.31.11",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
