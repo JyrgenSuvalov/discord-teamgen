@@ -4,6 +4,7 @@
 	"private": true,
 	"author": "Jürgen Šuvalov",
 	"license": "MIT",
+	"packageManager": "pnpm@11.1.2",
 	"scripts": {
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
