@@ -58,7 +58,8 @@ const privateServerRateLimit = async (
 				"You are sending commands too quickly. Please wait a moment.",
 				{ title: "Rate Limited" },
 			);
-			return createDiscordHttpResponse(errorResponse, 429);
+			// 200 so Discord shows the message instead of "interaction failed"
+			return createDiscordHttpResponse(errorResponse);
 		} else {
 			current.count++;
 		}
