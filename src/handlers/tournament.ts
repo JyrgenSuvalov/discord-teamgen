@@ -82,9 +82,8 @@ export async function handleTournamentCommand(
 			// Get user information (prefer member.user over user)
 			const user = interaction.member?.user || interaction.user;
 			if (!user) {
-				return new Response(
-					JSON.stringify(createErrorResponse("User information not available")),
-					{ status: 400, headers: { "Content-Type": "application/json" } },
+				return createDiscordHttpResponse(
+					createErrorResponse("User information not available"),
 				);
 			}
 
@@ -198,13 +197,8 @@ export async function handleTournamentCommand(
 					);
 					break;
 				default:
-					return new Response(
-						JSON.stringify(
-							createErrorResponse(
-								`Unknown tournament subcommand: ${subcommand}`,
-							),
-						),
-						{ status: 400, headers: { "Content-Type": "application/json" } },
+					return createDiscordHttpResponse(
+						createErrorResponse(`Unknown tournament subcommand: ${subcommand}`),
 					);
 			}
 
@@ -568,7 +562,7 @@ async function handleGenerateTeams(
 		"generate_teams",
 		params,
 	);
-	const runs = (validatedParams as GenerateTeams).runs || 500;
+	const runs = (validatedParams as GenerateTeams).runs;
 
 	const teams = await tournamentService.generateTeams(runs);
 
