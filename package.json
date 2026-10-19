@@ -20,12 +20,12 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",
-		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"@cloudflare/vitest-pool-workers": "^0.23.0",
 		"@types/node": "^26.6.4",
 		"drizzle-kit": "^0.31.11",
 		"typescript": "^7.0.2",
 		"vitest": "~3.2.0",
-		"wrangler": "^4.147.0"
+		"wrangler": "^4.149.0"
 	},
 	"dependencies": {
 		"@js-temporal/polyfill": "^0.5.1",
