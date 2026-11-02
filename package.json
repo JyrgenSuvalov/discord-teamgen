@@ -19,9 +19,9 @@
 		"biome:ci": "biome ci src/"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.15",
+		"@biomejs/biome": "2.6.3",
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
-		"@types/node": "^26.6.4",
+		"@types/node": "^26.6.5",
 		"drizzle-kit": "^0.31.11",
 		"typescript": "^7.0.2",
 		"vitest": "~3.2.0",
